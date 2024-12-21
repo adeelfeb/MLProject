@@ -40,8 +40,6 @@ function ChatList() {
   };
 
   const handleReload = () => {
-    // Clear Redux state (if using Redux Persist, this will clear the store)
-    // localStorage.clear();
     sessionStorage.clear();
 
     // Reload the entire app
@@ -102,7 +100,7 @@ function ChatList() {
             className={`flex items-center justify-center ${spacingClasses} rounded-md hover:bg-gray-200 ${
               isActive('/dashboard/info') ? 'bg-white' : ''
             }`}
-            title="Information"
+            title="Image Details"
           >
             <PiTreeStructureLight className={`${iconClasses} transform rotate-90`} />
           </Link>

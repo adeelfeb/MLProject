@@ -5,14 +5,9 @@ import session from 'express-session';
 import passport from './passport.js';
 import config from './conf.js'; // Import config.js for env variables
 import authRouter from "../router/auth.routes.js"; // Import auth routes
-import ImageKit from 'imagekit'; // Import ImageKit
+import processedImage from "../router/processedImage.routes.js"
 
-// Initialize ImageKit
-const imagekit = new ImageKit({
-    urlEndpoint: process.env.IMAGE_KIT_ENDPOINT,
-    publicKey: process.env.IMAGE_KIT_PUBLIC_KEY,
-    privateKey: process.env.IMAGE_KIT_PRIVATE_KEY
-});
+
 
 // Create an instance of an Express app
 const app = express();
@@ -56,16 +51,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/api/v1/auth', authRouter); // Mount the auth routes under '/api/v1/auth'
 
-// ImageKit authentication endpoint
-app.get("/api/upload", (req, res) => {
-    try {
-        const result = imagekit.getAuthenticationParameters();
-        res.json(result); // Send the authentication parameters
-    } catch (error) {
-        console.error("Error getting ImageKit auth parameters:", error);
-        res.status(500).json({ error: "Error getting authentication parameters" });
-    }
-});
+
 
 // Default route
 app.get("/", (req, res) => {
@@ -74,9 +60,11 @@ app.get("/", (req, res) => {
 
 // Import routes
 import userRouter from "../router/user.routes.js";
+import imageDetails from "../router/processedImage.routes.js";
 
 // Declare routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v2", imageDetails);
 
 // Export the app
 export { app };

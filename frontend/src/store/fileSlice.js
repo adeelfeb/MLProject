@@ -8,6 +8,7 @@ const initialState = {
     fileName: null,
   },
   fileUploadError: false, // Flag for file upload error
+  currentImageDetails: [], // Added object for current video details
 };
 
 const fileSlice = createSlice({
@@ -36,6 +37,12 @@ const fileSlice = createSlice({
       };
       state.fileUploadError = false; // Reset error flag
     },
+    setCurrentImageDetails(state, action) {
+      state.currentImageDetails = action.payload; // Set the current video details
+    },
+    resetCurrentImageDetails(state) {
+      state.currentImageDetails = []; // Reset current video details
+    },
   },
 });
 
@@ -44,6 +51,8 @@ export const {
   setCurrentFileData,
   setFileUploadError,
   resetFileState,
+  setCurrentImageDetails,
+  resetCurrentImageDetails,
 } = fileSlice.actions;
 
 export default fileSlice.reducer;

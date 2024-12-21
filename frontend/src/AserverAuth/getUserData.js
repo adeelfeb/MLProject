@@ -8,7 +8,6 @@ class GetUserData {
 
     async getFileHistory() {
         try {
-            
             const accessToken = localStorage.getItem('accessToken');
             if (!accessToken) {
                 console.error('No access token found in localStorage');
@@ -18,7 +17,7 @@ class GetUserData {
             // Axios POST request
             // console.log("Before sending history request to server")
             const response = await axios.post(
-                `${this.apiUrl}/users/get-file-history`, // API endpoint
+                `${this.apiUrl}/users/get-image-history`, // API endpoint
                 {},
                 {
                     headers: {
@@ -40,48 +39,47 @@ class GetUserData {
     
     
     
-    async getVectorData(fileId) {
-        try {
-          // Validate fileId before making the request
-          if (!fileId || typeof fileId !== "string") {
-            console.error("Invalid or missing 'fileId'.");
-            return null;
-          }
-      
-          const accessToken = localStorage.getItem("accessToken");
-          if (!accessToken) {
-            console.error("No access token found in localStorage");
-            return null;
-          }
-      
-          // Make the Axios POST request
-          const response = await axios.post(
-            `${this.apiUrl}/users/get-vector`, // Ensure the API endpoint matches
-            { fileId },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`, // Attach the access token
-              },
-              withCredentials: false, // Cookies not required
-            }
-          );
-      
-          // Log and return the vector data
-          console.log("Vector Data Received:", response.data);
-          return response.data;
-        } catch (error) {
-          // Improved error handling for better debugging
-          console.error(
-            "Error retrieving vector data:",
-            error.response?.data || error.message
-          );
-      
-          // Propagate a descriptive error message
-          throw new Error(error.response?.data?.message || "Failed to retrieve vector data.");
+    async getImageDetails(fileId) {
+      try {
+        // Validate fileId before making the request
+        if (!fileId || typeof fileId !== "string") {
+          console.error("Invalid or missing 'fileId'.");
+          return null;
         }
+    
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+          console.error("No access token found in localStorage");
+          return null;
+        }
+    
+        // Make the Axios POST request
+        const response = await axios.post(
+          `${this.apiUrl}/users/get-image-details`, // Ensure the API endpoint matches
+          { fileId }, // Send fileId in the request body
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Attach the access token
+            },
+            withCredentials: false, // Cookies not required
+          }
+        );
+    
+        // Log and return the vector data
+        // console.log("Image Details:", response.data.data);
+        return response.data.data;
+      } catch (error) {
+        // Improved error handling for better debugging
+        console.error(
+          "Error retrieving vector data:",
+          error.response?.data || error.message
+        );
+    
+        // Propagate a descriptive error message
+        throw new Error(error.response?.data?.message || "Failed to retrieve vector data.");
       }
-      
-
+    }
+    
 }
 
 

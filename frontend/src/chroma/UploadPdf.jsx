@@ -28,9 +28,7 @@ function UploadPdf() {
   // Function to fetch file history
   const fetchFileHistory = async () => {
     try {
-      // console.log("Inside the fetchHistory");
       const response = await getUserData.getFileHistory();
-      // console.log("The response was from history:", response);
       setUploadedFiles(response.data || []);
     } catch (error) {
       console.error("Error fetching file history:", error.message);

@@ -4,7 +4,245 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import { FileData } from "../models/filedata.model.js";
 import mongoose from "mongoose";
+import conf from "../src/conf.js"
+import axios from "axios"; // Import axios to make external requests
+
+
+
+
+
+
+
+const uploadFile = async (req, res, next) => {
+    try {
+        const { file, layers } = req; // Get the uploaded file from the request
+        if (!file) {
+            throw new ApiError(400, "No file uploaded");
+        }
+
+        // Upload the file to Cloudinary
+        const fileUrl = await uploadOnCloudinary(file.path); // Pass the local file path to Cloudinary upload
+
+        if (!fileUrl) {
+            throw new ApiError(500, "File upload to Cloudinary failed");
+        }
+
+        // Create a new FileData document to store the uploaded file information
+        const newFileData = new FileData({
+            fileUrl: fileUrl.url,  // The Cloudinary URL of the uploaded file
+            fileName: file.originalname,  // Original file name
+        });
+
+        // Save the new FileData object to the database
+        const savedFileData = await newFileData.save();
+
+        // Now, add this FileData object to the user's upload history
+        const user = await User.findByIdAndUpdate(
+            req.user?._id, // Assuming the user is authenticated and their ID is in req.user
+            {
+                $push: { fileData: savedFileData._id },  // Add the new file to the fileData array
+            },
+            { new: true } // Return the updated user document
+        ).select("-password"); // Optionally exclude the password from the response
+
+        // Send the response to the client first
+        res.status(200).json({
+            message: "File uploaded and user history updated successfully",
+            fileUrl: fileUrl.url, // Send the URL of the uploaded file
+            fileId: savedFileData._id,
+            fileName: file.originalname,
+        });
+
+        // Now, send the request to the external endpoint in the background
+        const ngrokUrl = conf.ngrokUrl; // Retrieve the ngrok URL from the environment
+        const externalEndpointUrl = conf.externalEndpoints.url1; // External endpoint URL from env
+
+        // Send data to the external endpoint
+        const data = {
+            fileUrl: fileUrl.url,
+            ngrokUrl: ngrokUrl,
+            layers: layers || 2
+        };
+
+        // Send the data to the external endpoint asynchronously
+        const response = await axios.post(externalEndpointUrl, data);
+
+        // After receiving the response, extract the processed images data
+        const processedImagesData = response.data.results; // Assuming 'results' contains the processed images with kernels and URLs
+        // console.log("ProcessedImagesData:", response.data);
+
+        // Loop through the processed images and update the FileData document with each processed image
+        for (const [kernelName, processedImageData] of Object.entries(processedImagesData)) {
+            // Extract the URL of the processed image, isMultipleLayers, and layersApplied
+            const { image_url, kernelName: kernel, isMultipleLayers, layersApplied } = processedImageData;
+
+            // Update the file data with the processed image details
+            savedFileData.processedImages.push({
+                kernelName: kernel,  // Name of the kernel used
+                image: image_url,    // Cloudinary URL of the processed image
+                isMultipleLayers: isMultipleLayers,  // Whether multiple layers were applied
+                layersApplied: layersApplied,        // Number of layers applied
+            });
+        }
+
+        // Save the updated FileData with processed images to the database
+        await savedFileData.save();
+
+        console.log("Processed images stored in the database successfully.");
+
+    } catch (error) {
+        next(error); // Pass the error to the error handler middleware
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const uploadFile = async (req, res, next) => {
+//     try {
+//         const { file } = req; // Get the uploaded file from the request
+//         if (!file) {
+//             throw new ApiError(400, "No file uploaded");
+//         }
+
+//         // Upload the file to Cloudinary
+//         const fileUrl = await uploadOnCloudinary(file.path); // Pass the local file path to Cloudinary upload
+
+//         if (!fileUrl) {
+//             throw new ApiError(500, "File upload to Cloudinary failed");
+//         }
+
+//         // Create a new FileData document to store the uploaded file information
+//         const newFileData = new FileData({
+//             fileUrl: fileUrl.url,  // The Cloudinary URL of the uploaded file
+//             fileName: file.originalname,  // Original file name
+//         });
+
+//         // Save the new FileData object to the database
+//         const savedFileData = await newFileData.save();
+
+//         // Now, add this FileData object to the user's upload history
+//         const user = await User.findByIdAndUpdate(
+//             req.user?._id, // Assuming the user is authenticated and their ID is in req.user
+//             {
+//                 $push: { fileData: savedFileData._id },  // Add the new file to the fileData array
+//             },
+//             { new: true } // Return the updated user document
+//         ).select("-password"); // Optionally exclude the password from the response
+
+//         // Send the response to the client first
+//         res.status(200).json({
+//             message: "File uploaded and user history updated successfully",
+//             fileUrl: fileUrl.url, // Send the URL of the uploaded file
+//             fileId: savedFileData._id,
+//             fileName: file.originalname,
+//         });
+
+//         // Now, send the request to the external endpoint in the background
+//         const ngrokUrl = conf.ngrokUrl; // Retrieve the ngrok URL from the environment
+//         // console.log("Ngrok url:", ngrokUrl)
+//         const externalEndpointUrl = conf.externalEndpoints.url1; // External endpoint URL from env
+//         // console.log("EndPoint Url:", externalEndpointUrl)
+
+//         // Send data to the external endpoint
+//         const data = {
+//             fileUrl: fileUrl.url,
+//             ngrokUrl: ngrokUrl,
+//         };
+
+//         // Send the data to the external endpoint asynchronously
+//         axios.post(externalEndpointUrl, data)
+//             .then(response => {
+//                 console.log("External endpoint response:", response.data);
+//             })
+//             .catch(error => {
+//                 console.error("Error sending data to external endpoint:", error.message);
+//             });
+
+//     } catch (error) {
+//         next(error); // Pass the error to the error handler middleware
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const generateAccessAndRefreshToken = async (userId)=>{
@@ -26,29 +264,6 @@ const generateAccessAndRefreshToken = async (userId)=>{
 
 
 // Function to handle file upload
-const uploadFile = async (req, res, next) => {
-    try {
-        const { file } = req; // Get the uploaded file from the request
-        if (!file) {
-            throw new ApiError(400, "No file uploaded");
-        }
-
-        // Upload the file to Cloudinary
-        const fileUrl = await uploadOnCloudinary(file.path); // Pass the local file path to Cloudinary upload
-
-        if (!fileUrl) {
-            throw new ApiError(500, "File upload to Cloudinary failed");
-        }
-
-        // Respond with the file URL
-        return res.status(200).json({
-            message: "File uploaded successfully",
-            fileUrl, // Send the URL of the uploaded file
-        });
-    } catch (error) {
-        next(error); // Pass the error to the error handler middleware
-    }
-};
 
 const registerUser = asyncHandler(async (req, res) => {
 

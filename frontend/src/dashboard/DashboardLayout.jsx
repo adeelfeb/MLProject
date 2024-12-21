@@ -21,12 +21,12 @@ function DashboardLayout() {
   // Handle toast notification when fileName changes
   useEffect(() => {
     if (fileName) {
-      setToastMessage(`File "${fileName}" uploaded successfully!`);
+      setToastMessage(`File "${fileName}" selected successfully!`);
       setIsError(false);
     }
     if(erroUpload===true){
       setIsError(true)
-      setToastMessage(`Error uploading file Try again`)
+      setToastMessage(`Error Selecting file Try again`)
     }
   }, [fileName, erroUpload]);
 
