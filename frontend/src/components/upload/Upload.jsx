@@ -159,7 +159,8 @@ function Upload() {
 
     try {
       // Upload the file with selected layer
-      const res = await uploadService.uploadImage(file, selectedLayer);
+      const layers = selectedLayer
+      const res = await uploadService.uploadImage(file, layers);
       onSuccess(res);
     } catch (err) {
       onError(err);

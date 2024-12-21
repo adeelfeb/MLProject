@@ -25,7 +25,7 @@ function Home() {
           <h1 className="text-8xl font-bold bg-gradient-to-r from-blue-900 via-purple-500 to-red-500 bg-clip-text text-transparent mb-4">
             Chatbot
           </h1>
-          <h2 className="text-2xl font-semibold text-white mb-6">Welcome to the RAG LLM Model</h2>
+          <h2 className="text-2xl font-semibold text-white mb-6">Welcome to the CNN Model</h2>
           <h3 className="text-lg text-white mb-8 max-w-[60%] mx-auto font-normal">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam nobis tenetur cumque error quo vel placeat velit, ullam fuga vitae tempore possimus accusamus tempora corrupti nihil! Nisi molestiae veniam assumenda.
           </h3>

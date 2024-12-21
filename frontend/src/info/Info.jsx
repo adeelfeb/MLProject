@@ -24,7 +24,7 @@ function Info() {
             <img
               src={currentFileData.fileUrl}
               alt={currentFileData.fileName}
-              className="w-72 h-72 object-cover rounded-full border-4 border-gray-300 shadow-lg"
+              className="w-72 h-72 object-cover rounded-full border-4 border-gray-300 shadow-lg cursor-pointer"
               onClick={() => handleImageClick(currentFileData.fileUrl)} // Handle image click
             />
           )}

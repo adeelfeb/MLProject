@@ -36,12 +36,12 @@ function Home() {
 
                 <div className="text-center lg:w-1/2 p-6 rounded-lg shadow-lg mb-6 lg:mb-0 z-10 relative">
                     <h1 className="text-8xl font-bold bg-gradient-to-r from-blue-900 via-purple-500 to-red-500 bg-clip-text text-transparent mb-4">
-                        Chatbot RAG
+                        CNN Model
                     </h1>
-                    <h2 className="text-2xl font-semibold text-white mb-6">Welcome to the RAG LLM Model</h2>
+                    <h2 className="text-2xl font-semibold text-white mb-6">Your Ultimate  Tool for Image and Neural Network Exploration</h2>
                     <h3 className="text-lg text-white mb-8 max-w-[60%] mx-auto font-normal">
-                        Unlock the full potential of your PDFs with our cutting-edge RAG model. Simply upload your document, and our intelligent chatbot will instantly process it, enabling dynamic and insightful conversations based on the content. Whether you’re exploring research papers, manuals, or reports, get instant, context-aware responses to your queries—transforming how you interact with documents forever. Start chatting today!
-                    </h3>
+                    Unlock the power of deep learning and computer vision with our cutting-edge platform. Whether you're analyzing images, exploring the inner workings of Convolutional Neural Networks (CNNs), or testing various layers for enhanced performance, we provide you with the tools to take your projects to the next level. Seamlessly upload your data, experiment with advanced models, and get real-time insights with a user-friendly interface designed to streamline your workflow. Dive into a world of possibilities, where technology meets simplicity.
+                       </h3>
                     <button
                         onClick={() => navigate('/dashboard')}  // Navigate to the dashboard on click
                         className="px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition duration-200"
@@ -78,13 +78,13 @@ function Home() {
                             </div>
                             <TypeAnimation
                                 sequence={[ 
-                                    "Summarize this pdf",
+                                    "Pass this image through CNN with kernel",
                                     2000, () => { setTypingStatus("Bot") },
-                                    "Bot: Your content is about...",
+                                    "Bot: Your content is ready!",
                                     2000, () => { setTypingStatus("Human2") },
-                                    "Give me Quiz based on this Pdf",
+                                    "Use Multilayer on this image",
                                     2000, () => { setTypingStatus("Bot") },
-                                    "Here are the mcqs and Short questions",
+                                    "Here are the image with operations applied",
                                     2000, () => { setTypingStatus("Human1") },
                                 ]}
                                 cursor={true}

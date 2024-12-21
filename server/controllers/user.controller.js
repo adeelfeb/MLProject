@@ -17,7 +17,8 @@ import axios from "axios"; // Import axios to make external requests
 
 const uploadFile = async (req, res, next) => {
     try {
-        const { file, layers } = req; // Get the uploaded file from the request
+        const { file } = req; // Get the uploaded file from the request
+        const layers = req.body.layers
         if (!file) {
             throw new ApiError(400, "No file uploaded");
         }
@@ -65,7 +66,7 @@ const uploadFile = async (req, res, next) => {
             ngrokUrl: ngrokUrl,
             layers: layers || 2
         };
-
+        console.log("Before Sending request:", ngrokUrl, externalEndpointUrl, data)
         // Send the data to the external endpoint asynchronously
         const response = await axios.post(externalEndpointUrl, data);
 

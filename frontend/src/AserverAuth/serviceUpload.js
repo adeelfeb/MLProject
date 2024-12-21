@@ -17,7 +17,7 @@ class UploadService {
           const formData = new FormData();
           formData.append('file', file);  // Append the file to the FormData
           formData.append('layers', layers);  // Append the layers value to the FormData
-
+          console.log("selected layer is :", layers)
           const response = await axios.post(`${this.apiUrl}/users/upload-file`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,

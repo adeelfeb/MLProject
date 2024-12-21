@@ -1,7 +1,7 @@
 async function checkFlaskHealth() {
     try {
         // Replace with the ngrok URL provided by the Flask app
-        const apiUrl = 'https://c89e-34-71-204-254.ngrok-free.app/health';
+        const apiUrl = 'https://c387-34-57-44-122.ngrok-free.app/test';
 
         // Prepare the request body with an 'id'
         const requestBody = {
@@ -11,11 +11,8 @@ async function checkFlaskHealth() {
 
         // Make a POST request to the /health endpoint with the request body
         const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody) // Send the request body as JSON
+            method: 'GET',
+            
         });
 
         // Parse the JSON response
