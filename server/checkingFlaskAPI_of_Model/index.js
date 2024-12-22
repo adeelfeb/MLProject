@@ -1,7 +1,7 @@
 async function checkFlaskHealth() {
     try {
         // Replace with the ngrok URL provided by the Flask app
-        const apiUrl = 'https://c387-34-57-44-122.ngrok-free.app/test';
+        const apiUrl = 'https://e479-34-29-210-166.ngrok-free.app/testl';
 
         // Prepare the request body with an 'id'
         const requestBody = {

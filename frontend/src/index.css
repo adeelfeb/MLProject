@@ -117,3 +117,18 @@ background: #b3b3b3;  /* Thumb hover color */
   }
 }
 
+@keyframes border-glow {
+  0% {
+    border-color: rgba(0, 0, 0, 0);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    border-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 3s infinite;
+}

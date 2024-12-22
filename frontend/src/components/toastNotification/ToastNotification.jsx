@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md'; // Close icon
 
-const ToastNotification = ({ message, duration, onClose, position = 'right', isSuccess = true }) => {
+const ToastNotification = ({ message, duration, onClose, position, isSuccess }) => {
   const [show, setShow] = useState(true);
+
+  // Set default values here if props are undefined
+  message = message || 'Default message';
+  duration = duration || 3000;
+  onClose = onClose || (() => {});  // No-op function for onClose
+  position = position || 'right';
+  isSuccess = isSuccess !== undefined ? isSuccess : true;
 
   useEffect(() => {
     if (duration > 0) {
@@ -46,14 +53,6 @@ const ToastNotification = ({ message, duration, onClose, position = 'right', isS
       </button>
     </div>
   );
-};
-
-ToastNotification.defaultProps = {
-  message: 'Default message',  // Default message to show
-  duration: 3000,  // Default duration is 3 seconds
-  onClose: () => {},  // Default no-op function for onClose
-  position: 'right',  // Default position to 'right'
-  isSuccess: true, // Default to success (green)
 };
 
 export default ToastNotification;

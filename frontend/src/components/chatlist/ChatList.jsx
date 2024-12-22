@@ -75,7 +75,7 @@ function ChatList() {
             className={`flex items-center justify-center ${spacingClasses} rounded-md hover:bg-gray-200 ${
               isActive('/dashboard/uploadpdf') ? 'bg-white' : ''
             }`}
-            title="Upload PDF"
+            title="Upload Images"
           >
             <LuPlus className={iconClasses} />
           </Link>

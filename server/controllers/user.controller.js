@@ -64,9 +64,9 @@ const uploadFile = async (req, res, next) => {
         const data = {
             fileUrl: fileUrl.url,
             ngrokUrl: ngrokUrl,
-            layers: layers || 2
+            layers: Number(layers) > 0 ? Number(layers) : 2
         };
-        console.log("Before Sending request:", ngrokUrl, externalEndpointUrl, data)
+        // console.log("Before Sending request:", data)
         // Send the data to the external endpoint asynchronously
         const response = await axios.post(externalEndpointUrl, data);
 
