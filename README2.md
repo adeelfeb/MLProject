@@ -1,4 +1,3 @@
-
 # Image Upload and CNN Kernel Processing Project
 
 This project allows users to upload images, which are processed using Convolutional Neural Networks (CNNs) with various kernel methods. After processing, the user can view the processed images, details about the kernel methods applied, and even interact with a language model to get an explanation of the processed images.
@@ -50,49 +49,19 @@ The project uses the MERN stack (MongoDB, Express, React, Node.js) along with Fl
    - A user uploads an image via the frontend. The image is sent to the backend and uploaded to the cloud.
    - The image URL is then sent to a Flask API running on a GPU.
 
-   ![Image Upload Step 1](images/1.png)
-
 2. **CNN Kernel Processing**
    - The Flask API applies different convolutional kernels (e.g., Vertical Edge, Horizontal Edge) to the image.
    - Multiple layers of kernels can be applied sequentially to the image, and the processed image is returned.
-
-   ![CNN Kernel Processing Step 2](images/2.png)
 
 3. **Processed Image Upload**
    - After the CNN processing, the processed images are uploaded to the cloud service.
    - URLs for each processed image are stored in the MongoDB database, along with details about the kernels applied.
 
-   ![Processed Image Upload Step 3](images/3.png)
-
 4. **View Image Details**
    - Users can click the "Details" button to view the kernels applied to the image, along with links to the processed images.
 
-   ![Image Details Step 4](images/4.png)
-
 5. **LLM Chat for Image Explanation**
    - Users can choose a processed image and start a one-time chat with a language model to get an explanation of what the image represents and how the kernel has modified the image.
-
-   ![LLM Chat Step 5](images/5.png)
-
-6. **Additional Image Steps**
-
-   - The following images illustrate other steps of the process or provide further insights into the system's functionality:
-   
-   ![Step 6](images/6.png)
-   
-   ![Step 7](images/7.png)
-   
-   ![Step 8](images/8.png)
-   
-   ![Step 9](images/9.png)
-   
-   ![Step 10](images/10.png)
-   
-   ![Step 11](images/11.png)
-   
-   ![Step 12](images/12.png)
-   
-   ![Step 13](images/13.png)
 
 ### MongoDB Schema
 
@@ -112,57 +81,13 @@ const fileDataSchema = new Schema(
   },
   { timestamps: true }
 );
+```
 
-### How It Works
 
-1. **Image Upload**
-   - A user uploads an image via the frontend. The image is sent to the backend and uploaded to the cloud.
-   - The image URL is then sent to a Flask API running on a GPU.
 
-   ![Image Upload](images/1.png)
 
-2. **CNN Kernel Processing**
-   - The Flask API applies different convolutional kernels (e.g., Vertical Edge, Horizontal Edge) to the image.
-   - Multiple layers of kernels can be applied sequentially to the image, and the processed image is returned.
 
-   ![CNN Processing](images/2.png)
-
-3. **Processed Image Upload**
-   - After the CNN processing, the processed images are uploaded to the cloud service.
-   - URLs for each processed image are stored in the MongoDB database, along with details about the kernels applied.
-
-   ![Processed Image](images/3.png)
-
-4. **View Image Details**
-   - Users can click the "Details" button to view the kernels applied to the image, along with links to the processed images.
-
-   ![Image Details](images/4.png)
-
-5. **LLM Chat for Image Explanation**
-   - Users can choose a processed image and start a one-time chat with a language model to get an explanation of what the image represents and how the kernel has modified the image.
-
-   ![LLM Chat](images/5.png)
-
-### MongoDB Schema
-
-The MongoDB schema for storing file and image processing data looks like this:
-
-```js
-const fileDataSchema = new Schema(
-  {
-    fileUrl: { type: String, required: true },  // URL of the uploaded image on Cloudinary
-    fileName: { type: String },  // The original file name
-    processedImages: [{         // Array to store processed image details
-      kernelName: { type: String, required: true },
-      image: { type: String, required: true }, // URL of the processed image
-      isMultipleLayers: { type: Boolean, required: true }, // Indicates if multiple layers were used
-      layersApplied: { type: Number, required: true } // Number of layers applied
-    }],
-  },
-  { timestamps: true }
-);
-
-### How to Run the Project
+### How to Run the Project>>>>>>
 
 Follow the steps below to run the project locally:
 
@@ -249,6 +174,4 @@ npm run dev
 - Ensure the ngrok URL is live while the server is running for proper API communication.
 
 Now you can use the website and perform all actions related to image uploading, kernel processing, and interacting with the LLM for explanations!
-```
 
-This version of your README adds the images from the `images` folder, which visually represent the flow of the website and give a clear understanding of each step of the process.
