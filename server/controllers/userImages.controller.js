@@ -18,16 +18,19 @@ const getImageHistory = asyncHandler(async (req, res) => {
   const userObjectId = new ObjectId(userId);
 
   // Retrieve the user document using the ObjectId and populate fileData
-  const user = await User.findOne({ _id: userObjectId }).populate('fileData');
+  const user = await User.findOne({ _id: userObjectId })
+    .populate({
+      path: 'fileData',               // Populate the fileData field
+      select: 'fileName fileUrl createdAt',  // Include fileName, fileUrl, and createdAt
+    });
 
   if (!user) {
-    throw new ApiError(404, "No chat history found for this user");
+    throw new ApiError(404, "No user found");
   }
 
   // Respond with the fileData array for the user
   res.status(200).json(new ApiResponse(200, user.fileData, "File data retrieved successfully"));
 });
-
 
 
 const getImageDetails = asyncHandler(async (req, res) => {

@@ -79,13 +79,22 @@ const uploadFile = async (req, res, next) => {
             // Extract the URL of the processed image, isMultipleLayers, and layersApplied
             const { image_url, kernelName: kernel, isMultipleLayers, layersApplied } = processedImageData;
 
+            const layersAppliedFlag = layersApplied > 1 ? true : false;
+
             // Update the file data with the processed image details
             savedFileData.processedImages.push({
                 kernelName: kernel,  // Name of the kernel used
                 image: image_url,    // Cloudinary URL of the processed image
-                isMultipleLayers: isMultipleLayers,  // Whether multiple layers were applied
-                layersApplied: layersApplied,        // Number of layers applied
+                isMultipleLayers: layersAppliedFlag,  // Whether multiple layers were applied
+                layersApplied: layersApplied,    // Boolean indicating if layers applied is greater than 1
             });
+            // // Update the file data with the processed image details
+            // savedFileData.processedImages.push({
+            //     kernelName: kernel,  // Name of the kernel used
+            //     image: image_url,    // Cloudinary URL of the processed image
+            //     isMultipleLayers: isMultipleLayers,  // Whether multiple layers were applied
+            //     layersApplied: layersApplied,        // Number of layers applied
+            // });
         }
 
         // Save the updated FileData with processed images to the database
@@ -120,80 +129,6 @@ const uploadFile = async (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
-
-// const uploadFile = async (req, res, next) => {
-//     try {
-//         const { file } = req; // Get the uploaded file from the request
-//         if (!file) {
-//             throw new ApiError(400, "No file uploaded");
-//         }
-
-//         // Upload the file to Cloudinary
-//         const fileUrl = await uploadOnCloudinary(file.path); // Pass the local file path to Cloudinary upload
-
-//         if (!fileUrl) {
-//             throw new ApiError(500, "File upload to Cloudinary failed");
-//         }
-
-//         // Create a new FileData document to store the uploaded file information
-//         const newFileData = new FileData({
-//             fileUrl: fileUrl.url,  // The Cloudinary URL of the uploaded file
-//             fileName: file.originalname,  // Original file name
-//         });
-
-//         // Save the new FileData object to the database
-//         const savedFileData = await newFileData.save();
-
-//         // Now, add this FileData object to the user's upload history
-//         const user = await User.findByIdAndUpdate(
-//             req.user?._id, // Assuming the user is authenticated and their ID is in req.user
-//             {
-//                 $push: { fileData: savedFileData._id },  // Add the new file to the fileData array
-//             },
-//             { new: true } // Return the updated user document
-//         ).select("-password"); // Optionally exclude the password from the response
-
-//         // Send the response to the client first
-//         res.status(200).json({
-//             message: "File uploaded and user history updated successfully",
-//             fileUrl: fileUrl.url, // Send the URL of the uploaded file
-//             fileId: savedFileData._id,
-//             fileName: file.originalname,
-//         });
-
-//         // Now, send the request to the external endpoint in the background
-//         const ngrokUrl = conf.ngrokUrl; // Retrieve the ngrok URL from the environment
-//         // console.log("Ngrok url:", ngrokUrl)
-//         const externalEndpointUrl = conf.externalEndpoints.url1; // External endpoint URL from env
-//         // console.log("EndPoint Url:", externalEndpointUrl)
-
-//         // Send data to the external endpoint
-//         const data = {
-//             fileUrl: fileUrl.url,
-//             ngrokUrl: ngrokUrl,
-//         };
-
-//         // Send the data to the external endpoint asynchronously
-//         axios.post(externalEndpointUrl, data)
-//             .then(response => {
-//                 console.log("External endpoint response:", response.data);
-//             })
-//             .catch(error => {
-//                 console.error("Error sending data to external endpoint:", error.message);
-//             });
-
-//     } catch (error) {
-//         next(error); // Pass the error to the error handler middleware
-//     }
-// };
 
 
 
